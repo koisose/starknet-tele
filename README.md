@@ -1,4 +1,4 @@
-Video demo: https://www.youtube.com/watch?v=dXQk3fhCTLs
+Telegram bot: https://t.me/starknetai_bot
+Wave 1 demo: https://www.youtube.com/watch?v=JK7CGmRD-zM
+Wave 2 demo: https://www.youtube.com/watch?v=KJZcvfiVEyo
 
-curl -F "url=https://yourdomain.com/webhook" "https://api.telegram.org/bot123456789:ABCdefGhIJKlmNoPQRstUvwxYZ/setWebhook"
-https://github.com/adamlacombe/sharp-image-proxy
