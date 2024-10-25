@@ -29,8 +29,8 @@ export const NetworkOptions = ({ hidden = false }: NetworkOptionsProps) => {
                 switchChain?.({ chainId: allowedNetwork.id });
               }}
             >
-              <ArrowsRightLeftIcon className="h-6 w-4 ml-2 sm:ml-0" />
-              <span>
+              <ArrowsRightLeftIcon className="h-6 w-4 ml-2 sm:ml-0 text-sky-200" />
+              <span className="text-sky-200">
                 Switch to{" "}
                 <span
                   style={{

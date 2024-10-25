@@ -10,7 +10,9 @@ import { getConnInfo } from 'hono/cloudflare-workers'
 import { uploadArweave, generateImage } from '~~/apa/create-image'
 import { validateFramesMessage } from "@airstack/frames";
 import { init } from "@airstack/frames";
-
+import {saveBulkData,saveData,getDataByAggregate,getData} from '~~/apa/mongo_atlas'
+import {makeEmbedding} from '~~/apa/gemini'
+import { scrapeStarknetDocs } from '~~/apa/search-web'
 init(process.env.AIRSTACK_API_KEY as string);
 import ky from 'ky'
 const aj = arcjet({
@@ -20,11 +22,6 @@ const aj = arcjet({
     fixedWindow({
       mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
       match: "/api/imagine", // match all requests to /api/hello
-      window: "12h", // 60 second fixed window
-      max: 1, // allow a maximum of 100 requests
-    }, {
-      mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
-      match: "/api/panda", // match all requests to /api/hello
       window: "12h", // 60 second fixed window
       max: 1, // allow a maximum of 100 requests
     }),
@@ -45,12 +42,59 @@ const app = new Frog({
   ui: { vars },
   assetsPath: "/",
   basePath: "/api",
+  browserLocation: '/:path',
   // Supply a Hub to enable frame verification.
   // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
   title: "SUPER FRAME",
 });
+// app.hono.post("/savedatamongoazure", async c => {
 
+//   const data = await c.req.json();
+//  const scraped=await scrapeStarknetDocs(data.url)
+//   const embed = await makeEmbedding(scraped.content);
+//   const saved = await saveData({ ...scraped, vectorContent: embed.values, url: data.url }, "starknet");
 
+//   return c.json({...scraped});
+// });
+// app.hono.post("/savedatamongoazure", async c => {
+
+//   const data = await c.req.json();
+//  const scraped=await scrapeStarknetDocs(data.url)
+//  const firstHalf = scraped.content.substring(0, Math.floor(scraped.content.length / 2));
+//  const secondHalf = scraped.content.substring(Math.floor(scraped.content.length / 2));
+//  const embed1=await makeEmbedding(firstHalf)
+//  const embed2=await makeEmbedding(secondHalf)
+//  const saved=await saveData({...scraped,vectorContent:embed1.values,url:data.url},"starknet")
+//  const saved2=await saveData({...scraped,vectorContent:embed2.values,url:data.url},"starknet")
+//   return c.json({firstHalf,secondHalf,...scraped});
+// });
+// app.hono.post("/savedatamongoazure", async c => {
+
+//   const data = await c.req.json();
+//   const scraped = await scrapeStarknetDocs(data.url)
+//   const partLength = Math.floor(scraped.content.length / 3);
+//   const firstPart = scraped.content.substring(0, partLength);
+//   const secondPart = scraped.content.substring(partLength, 2 * partLength);
+//   const thirdPart = scraped.content.substring(2 * partLength);
+//   const embed1 = await makeEmbedding(firstPart);
+//   const embed2 = await makeEmbedding(secondPart);
+//   const embed3 = await makeEmbedding(thirdPart);
+//   const saved1 = await saveData({ ...scraped, vectorContent: embed1.values, url: data.url }, "starknet");
+//   const saved2 = await saveData({ ...scraped, vectorContent: embed2.values, url: data.url }, "starknet");
+//   const saved3 = await saveData({ ...scraped, vectorContent: embed3.values, url: data.url }, "starknet");
+//   return c.json({ firstPart, secondPart, thirdPart, ...scraped });
+// });
+// app.hono.post("/searchscraped", async c => {
+
+//   const data = await c.req.json();
+//  const scraped=await scrapeStarknetDocs(data.url)
+//   return c.json(scraped);
+// });
+app.hono.get("/getallscraped", async c => {
+
+  const data=await getData("starknet")
+  return c.json(data as any);
+});
 // Uncomment to use Edge Runtime
 // export const runtime = 'edge'
 app.composerAction(

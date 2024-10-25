@@ -81,28 +81,28 @@ export const AddressInfoDropdown = ({
               >
                 <div className="btn-sm !rounded-xl flex gap-3 py-3">
                   <DocumentDuplicateIcon
-                    className="text-xl font-normal h-6 w-4 cursor-pointer ml-2 sm:ml-0"
+                    className="text-xl font-normal h-6 w-4 cursor-pointer ml-2 sm:ml-0 text-sky-200"
                     aria-hidden="true"
                   />
-                  <span className=" whitespace-nowrap">Copy address</span>
+                  <span className=" whitespace-nowrap text-sky-200">Copy address</span>
                 </div>
               </CopyToClipboard>
             )}
           </li>
           <li className={selectingNetwork ? "hidden" : ""}>
             <label htmlFor="qrcode-modal" className="btn-sm !rounded-xl flex gap-3 py-3">
-              <QrCodeIcon className="h-6 w-4 ml-2 sm:ml-0" />
-              <span className="whitespace-nowrap">View QR Code</span>
+              <QrCodeIcon className="h-6 w-4 ml-2 sm:ml-0 text-sky-200" />
+              <span className="whitespace-nowrap text-sky-200">View QR Code</span>
             </label>
           </li>
           <li className={selectingNetwork ? "hidden" : ""}>
             <button className="menu-item btn-sm !rounded-xl flex gap-3 py-3" type="button">
-              <ArrowTopRightOnSquareIcon className="h-6 w-4 ml-2 sm:ml-0" />
+              <ArrowTopRightOnSquareIcon className="h-6 w-4 ml-2 sm:ml-0 text-sky-200" />
               <a
                 target="_blank"
                 href={blockExplorerAddressLink}
                 rel="noopener noreferrer"
-                className="whitespace-nowrap"
+                className="whitespace-nowrap text-sky-200"
               >
                 View on Block Explorer
               </a>
@@ -117,7 +117,7 @@ export const AddressInfoDropdown = ({
                   setSelectingNetwork(true);
                 }}
               >
-                <ArrowsRightLeftIcon className="h-6 w-4 ml-2 sm:ml-0" /> <span>Switch Network</span>
+                <ArrowsRightLeftIcon className="h-6 w-4 ml-2 sm:ml-0 text-sky-200" /> <span className="text-sky-200">Switch Network</span>
               </button>
             </li>
           ) : null}

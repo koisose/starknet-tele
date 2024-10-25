@@ -170,12 +170,7 @@ export async function askGemini(content: string, systemMessage: string) {
 
     ],
   });
-
-
   const result = await chatSession.sendMessage(content);
-
-
-
   const text = result.response.text();
   return text
 }
