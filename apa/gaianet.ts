@@ -50,6 +50,24 @@ export async function generateImageGaia(prompt: string) {
 
     return response;
 }
+export async function saveImageOra(url: string) {
+  
+  const apiUrl = `/api/saveora`;
+  // console.log(apiKey)
+  const formData = {
+    url
+  };
+
+  const response = await ky.post(apiUrl, {
+    json: formData,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    timeout: 100000
+  }).json();
+
+  return response;
+}
 export async function generateAI(prompt: any,system:any,node:any) {
   
   const apiUrl = `/api/aicompletion`;
@@ -127,7 +145,7 @@ export async function generateImage(content: string) {
 
   return result.data;
 }
-export const imagePrompt = `A diorama showcasing a fantasy siege scene, rendered in vibrant pixel art style reminiscent of classic 8-bit RPGs. The scene is set on a [terrain type], where a vast [attacking group] is laying siege to a towering, pixelated castle. Some are [attacking action], while others [attacking action 2]. The castle is defended by [defending group] who are valiantly fighting back. The diorama is meticulously crafted and encased within a transparent acrylic display case, enhancing the nostalgic feel. Below the battlefield scene, a semi-transparent game menu overlay displays a single health bar representing the castle's health. Above the health bar, the text "[Pick 'north castle attack' or 'south castle attack']" is displayed in a clear, pixelated font. The overall scene is well-lit, with soft lighting that accentuates the pixel art details and the clear case. The background is intentionally blurred to draw focus to the diorama itself. The style is retro gaming, pixel art, nostalgic, with a touch of diorama realism. --ar 3:2 --zoom 2 --v 5 --style raw photo`
+export const imagePrompt = `A diorama showcasing a fantasy siege scene, rendered in vibrant pixel art style reminiscent of classic 8-bit RPGs. The scene is set on a [terrain type], where a vast [attacking group] is laying siege to a towering, pixelated castle. Some are [attacking action], while others [attacking action 2]. The castle is defended by [defending group] who are valiantly fighting back. The diorama is meticulously crafted and encased within a transparent acrylic display case, enhancing the nostalgic feel. Below the battlefield scene, a semi-transparent game menu overlay displays a single health bar representing the castle's health. Above the health bar, the text \`[pick 'north castle attack' or 'south castle attack']\` is displayed in a clear, pixelated font. The overall scene is well-lit, with soft lighting that accentuates the pixel art details and the clear case. The background is intentionally blurred to draw focus to the diorama itself. The style is retro gaming, pixel art, nostalgic, with a touch of diorama realism. --ar 3:2 --zoom 2 --v 5 --style raw photo`
 //Replace the bracketed placeholders with your desired character, monster, terrain, and hero descriptions.
 
 export async function askGemini(content: string, systemMessage: string) {

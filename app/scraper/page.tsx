@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~~/components/ui/dialog"
+import { Textarea } from "~~/components/ui/textarea"
 import ky from 'ky'
 const postData = async (url:any,data:any) => {
   try {
@@ -41,11 +42,7 @@ export default function Component() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [urlInput, setUrlInput] = useState("")
 const [vectorData,setVectorData] = useState([])
-  const sampleData = [
-    { id: 1, url: "https://example.com", status: "Active" },
-    { id: 2, url: "https://sample.org", status: "Pending" },
-    { id: 3, url: "https://test.net", status: "Inactive" },
-  ]
+const [search, setSearch] = useState("")
 
   const handleSubmit = () => {
     setIsModalOpen(true)
@@ -63,8 +60,7 @@ const [vectorData,setVectorData] = useState([])
       <div className="w-full max-w-md mx-auto space-y-4">
         <div className="space-y-2 mt-5">
           <Label htmlFor="url">URL</Label>
-          <Input 
-            type="url" 
+          <Textarea
             id="url" 
             placeholder="https://example.com" 
             value={urlInput}
@@ -73,6 +69,21 @@ const [vectorData,setVectorData] = useState([])
         </div>
         <Button className="w-full" onClick={async()=>{
           const data=await postData('/api/savedatamongoazure',{url:urlInput})
+          console.log(data)
+        }}>
+          Scrape
+        </Button>
+        <div className="space-y-2 mt-5">
+          <Label htmlFor="url">Search</Label>
+          <Textarea
+            id="url" 
+            placeholder="https://example.com" 
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <Button className="w-full" onClick={async()=>{
+          const data=await postData('/api/checkanswermicrosoft',{text:search})
           console.log(data)
         }}>
           Scrape

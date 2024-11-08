@@ -1,0 +1,8 @@
+[submodule "acontract/lib/forge-std"]
+	path = acontract/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "acontract/lib/OAO"]
+	path = acontract/lib/OAO
+	url = https://github.com/ora-io/OAO
+[submodule "lib/OAO"]
+	branch = main

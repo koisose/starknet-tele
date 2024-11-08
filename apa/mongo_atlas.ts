@@ -169,7 +169,8 @@ export async function getDataByQuery(database: string, query: any) {
     }
   } catch (err) {
     console.error("Error:", err);
-    return [];
+    //@ts-ignore
+    throw new Error(err.message)
   }
 }
 export async function getDataByAggregate(database: string, query: any) {
