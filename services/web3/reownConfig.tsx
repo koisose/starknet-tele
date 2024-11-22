@@ -1,6 +1,6 @@
 import { cookieStorage, createStorage } from '@wagmi/core'
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
-import { morphHolesky,holesky,optimismSepolia} from '@reown/appkit/networks'
+import { morphHolesky,holesky,optimismSepolia,sepolia} from '@reown/appkit/networks'
 
 
 // Get projectId from https://cloud.reown.com
@@ -11,7 +11,7 @@ if (!projectId) {
 }
 
 
-export const networks = [morphHolesky,holesky,optimismSepolia]
+export const networks = [sepolia,morphHolesky,holesky,optimismSepolia]
 
 //Set up the Wagmi Adapter (Config)
 export const wagmiAdapter = new WagmiAdapter({

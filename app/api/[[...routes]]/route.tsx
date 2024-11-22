@@ -13,8 +13,9 @@ import { init } from "@airstack/frames";
 import {saveBulkData,saveData,getDataByAggregate,getData} from '~~/apa/mongo_atlas'
 import {makeEmbedding} from '~~/apa/gemini'
 import { scrapeStarknetDocs } from '~~/apa/search-web'
-import { embedding } from '~~/apa/akash'
+import { embedding,askLlama } from '~~/apa/akash'
 import { Bot } from "grammy";
+import { fetchBalance } from '~~/apa/starknet'
 init(process.env.AIRSTACK_API_KEY as string);
 import ky from 'ky'
 const aj = arcjet({
@@ -153,11 +154,47 @@ const sorted = allData.sort((a, b) => b.score - a.score);
 //   const data=await getData("starknet")
 //   return c.json(data as any);
 // });
+function escapeMarkdownV2(text: string) {
+  text = text.replace(/(^|\s)(####|###|##|#)\s*(\S.*)/g, (match, prefix, hash, content) => {
+      return `${prefix}*${content}*`;
+  });
+
+  // Replace all instances of '**' with '*'
+  text = text.replace(/\*\*/g, '*');
+  const reservedCharacters = /([_[\]()~>#+\-=|{}.!])/g; // Removed '\\' from regex
+  text = text.replace(reservedCharacters, '\\$1');
+
+  // Unescape any Markdown URLs of the format []()
+  // Remove any '\' from Markdown links
+  text = text.replace(/\[(.*?)\]\((.*?)\)/g, '[$1]($2)');
+
+  // Replace all instances of "\'\'" with "'"
+  return text.replace(/\\'\\'/g, "'");
+}
+function cleanMarkdown(text: string) {
+  const markdownUrlRegex = /!\[.*?\]\(.*?\)|\[.*?\]\(.*?\)/g;
+  const popo = escapeMarkdownV2(text).replace(/\\([\[\]()])/g, "$1")
+  const poci = popo.replace(markdownUrlRegex, (match) => `{{${match}}}`)
+  const escapedStr = poci.replace(/([()[\]])/g, '\\$1');
+  return escapedStr.replace(/{{(.*?)}}/g, (match, p1) => p1.replace(/\\([\[\]()])/g, "$1"))
+      .replace(/(^|\s)\*(\w+\s+\w+)\*(\s|$)/g, '$1\\*$2\\*$3')
+      .replace(/(^|\s)\*(\s|$)/g, '$1\\-$2');
+}
 app.hono.post("/sendmessage", async c => {
   const data = await c.req.json();
   const bot = new Bot(process.env.STARKNETAI_BOT as string);
-  await bot.api.sendMessage(data.chatId, data.text);
+  await bot.api.sendMessage(data.chatId, cleanMarkdown(data.text), { parse_mode: "MarkdownV2" });
   return c.json({haha:"haha"});
+});
+app.hono.post("/askllama", async c => {
+  const data = await c.req.json();
+  const response = await askLlama(data.prompt,data.system)
+  return c.json(response);
+});
+app.hono.post("/balance", async c => {
+  const data = await c.req.json();
+  const response = await fetchBalance(data.address)
+  return c.json(response as any);
 });
 // Uncomment to use Edge Runtime
 // export const runtime = 'edge'

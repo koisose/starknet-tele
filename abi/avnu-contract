@@ -1,0 +1,4 @@
+0x02c56e8b00dbe2a71e57472685378fc8988bba947e9a99b26a00fade2b4fe7c2
+https://sepolia.voyager.online/tx/0x79b333d8849e99dbe4b2b369b29e2256407ec979486ec3322f5939e0aa15f2a
+starkli class-at "0x02c56e8b00dbe2a71e57472685378fc8988bba947e9a99b26a00fade2b4fe7c2" --network sepolia | npx a
+bi-wan-kanabi --input /dev/stdin --output avnu-starknet-sepolia.ts

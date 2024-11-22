@@ -1,6 +1,6 @@
 import ky from 'ky'
 import { AzureOpenAI } from "openai";
-const apiKey="4e7c7ada-3f58-47a5-b294-f08f3fb17d64"
+const apiKey=""
 const url=`https://mango-bush-0a9e12903.5.azurestaticapps.net/api/v1/openai/deployments/gpt-4o`
 export async function askOpenAISystem(messages:any) {
   const response = await ky.post(`${url}/chat/completions?api-version=2023-12-01-preview`, {
@@ -153,7 +153,7 @@ try {
     json: {"temperature":0.7,"stop":["Stop sequences"],"max_tokens":512,"top_p":0.9,"frequency_penalty":0,"presence_penalty":0,"messages":[{"role":"system","content":"You are an AI assistant that helps people find information."},{"role":"user","content":"\"haha\""},{"role":"assistant","content":"Hello! How can I assist you today?"},{"role":"user","content":"hello"}]},
     headers: {
       'Content-Type': 'application/json',
-      'Api-Key': '4e7c7ada-3f58-47a5-b294-f08f3fb17d64',
+      'Api-Key': '',
       'x-ms-useragent':'azsdk-js-openai-rest/1.0.0-beta.11 core-rest-pipeline/1.15.0 OS/Windows',
       'origin':'https://mango-bush-0a9e12903.5.azurestaticapps.net'
     },

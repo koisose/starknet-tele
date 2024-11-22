@@ -12,7 +12,7 @@ import { useInitializeNativeCurrencyPrice } from "~~/hooks/scaffold-eth";
 // import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 import { wagmiAdapter, projectId } from "~~/services/web3/reownConfig";
 import { createAppKit } from '@reown/appkit/react'
-import { morphHolesky,holesky,optimismSepolia } from '@reown/appkit/networks'
+import { morphHolesky,holesky,optimismSepolia,sepolia } from '@reown/appkit/networks'
 const metadata = {
   name: 'morph-ai',
   description: 'Morph AI',
@@ -22,8 +22,8 @@ const metadata = {
 const modal = createAppKit({
   adapters: [wagmiAdapter],
   projectId:projectId as any,
-  networks: [morphHolesky,holesky,optimismSepolia],
-  defaultNetwork: optimismSepolia,
+  networks: [morphHolesky,holesky,optimismSepolia,sepolia],
+  defaultNetwork: sepolia,
   metadata: metadata,
   features: {
     email: true, // default to true

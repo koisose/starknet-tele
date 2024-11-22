@@ -7,6 +7,7 @@ import { notification } from "~~/utils/scaffold-eth";
 import { generateAI, generateImageGaia, imagePrompt,uploadArweaveFrontend } from '~~/apa/gaianet';
 import { useSearchParams } from "next/navigation";
 import { postComposerCreateCastActionMessage } from "frog/next";
+import {generateLlama} from '~~/apa/akash'
 export default function Component() {
   const [attackReason, setAttackReason] = useState('')
   const [generatedImage, setGeneratedImage] = useState('')
@@ -106,10 +107,10 @@ export default function Component() {
               console.log(yourCrew)
               setPickedCrew(yourCrew)
               setPickedCastle(yourPick)
-              const node = { subdomain: "0x9b829bf1e151def03532ab355cdfe5cee001f4b0.us.gaianet.network", "model_name": "Meta-Llama-3-8B-Instruct-Q5_K_M" }
-              const reasonToAttack = await generateAI(`{"crew":"${yourCrew}","attacking":"${yourPick}"}`, `You're an attack sequence generator there is a war between north and south castle, people can pick which castle they gonna attack by "attacking" data, people can pick what crew they attack with by "crew" data,give them a story on why they should attack their particular castle and how do they attack them from provided data, make it one liner,short, and concise`, node)
+              // const node = { subdomain: "0x9b829bf1e151def03532ab355cdfe5cee001f4b0.us.gaianet.network", "model_name": "Meta-Llama-3-8B-Instruct-Q5_K_M" }
+              const reasonToAttack = await generateLlama(`{"crew":"${yourCrew}","attacking":"${yourPick}"}`, `You're an attack sequence generator there is a war between north and south castle, people can pick which castle they gonna attack by "attacking" data, people can pick what crew they attack with by "crew" data,give them a story on why they should attack their particular castle and how do they attack them from provided data, make it one liner,short, and concise`)
               const why = reasonToAttack
-              const imageGenerator = await generateAI(`{"story":"${(why as any).choices[0].message.content}","image_prompt":"${imagePrompt}"}`, `based the story data replace [terrain type],[attacking group],[attacking action],[attacking action 2],[defending group],[Pick 'north castle attack' or 'south castle attack'], do not change the prompt only replace the bracket, answer in this schema {"image_prompt":"<image_prompt>"} with no explanation whatsoever, only answer in JSON format`, node)
+              const imageGenerator = await generateLlama(`{"story":"${(why as any).choices[0].message.content}","image_prompt":"${imagePrompt}"}`, `based the story data replace [terrain type],[attacking group],[attacking action],[attacking action 2],[defending group],[Pick 'north castle attack' or 'south castle attack'], do not change the prompt only replace the bracket, answer in this schema {"image_prompt":"<image_prompt>"} with no explanation whatsoever, only answer in JSON format`)
               const imageRes = imageGenerator
               const cover=await uploadArweaveFrontend("image",`${process.env.NEXT_PUBLIC_URL}/screenshot/farcastles/1reason?text=${encodeURIComponent(`Reason why i attack ${yourPick} and joining ${yourCrew}`)}`)
               const reason=await uploadArweaveFrontend("image",`${process.env.NEXT_PUBLIC_URL}/screenshot/farcastles/1reason?text=${encodeURIComponent((why as any).choices[0].message.content)}`)
@@ -125,6 +126,8 @@ export default function Component() {
               setGeneratedImage(`https://uploader.irys.xyz/${(newGeneratedImage as any).receiptId}`)
               setLoading(false)
             } catch (e) {
+              //@ts-ignore
+              console.log(e.message)
               try {
                 //@ts-ignore
                 if (e.response.status === 429) {
@@ -179,7 +182,7 @@ export default function Component() {
                 embeds: [`${process.env.NEXT_PUBLIC_URL}/api/attack/${receiptId}`],
               });
             }else{
-              window.open(`https://warpcast.com/~/compose?text=${encodeURIComponent(`!attack ${pickedCastle} ${crews[parseInt(selectedCrew)].value}`)}&channelKey=farcastles&embeds[]=${process.env.NEXT_PUBLIC_URL}/api/attack/${receiptId}`, '_blank');
+              window.open(`https://warpcast.com/~/compose?text=${encodeURIComponent(`!attack ${pickedCastle} ${crews[parseInt(selectedCrew)].value} @aethernet @mfergpt @askgina.eth @elefant @clanker`)}&channelKey=farcastles&embeds[]=${process.env.NEXT_PUBLIC_URL}/api/attack/${receiptId}`, '_blank');
             }
             // 
              
